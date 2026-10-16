@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_eyebrow">Sign in to continue</string>
+    <string name="auth_title">Your garage, on every device.</string>
+    <string name="auth_subtitle">Sign in with Google to keep your vehicles, service history, and receipts backed up and in sync.</string>
+    <string name="auth_google_button">Continue with Google</string>
+    <string name="auth_error_no_google_account">No Google account on this device. Add one in Settings &gt; Accounts.</string>
+    <string name="auth_error_no_play_services">Google Play services is unavailable on this device.</string>
+    <string name="auth_error_generic">Sign-in failed. Please try again.</string>
+    <string name="auth_footer">We only use your Google account to sync your garage.</string>
+</resources>

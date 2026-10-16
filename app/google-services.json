@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "310898941379",
+    "project_id": "mygarage-77163",
+    "storage_bucket": "mygarage-77163.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310898941379:android:fe7dc62d1e9e1fd2727176",
+        "android_client_info": {
+          "package_name": "com.almudier.mygarage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "310898941379-hg2d5non2s1bbd5k5hc8u6k9h2q0ussg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.almudier.mygarage",
+            "certificate_hash": "f6f6699583d3c24665478321d4b786fc07a94129"
+          }
+        },
+        {
+          "client_id": "310898941379-m3hefe35qcq8hvt6ijraiv8gd03tpvg0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.almudier.mygarage",
+            "certificate_hash": "e52066b0d19ae305eed911700207318eb294c39a"
+          }
+        },
+        {
+          "client_id": "310898941379-49n22r5tbm3tecp0cvpvh779p9ct9br7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAH2YwRy0vcZJCkzwxRxX55sstg4j4BLO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "310898941379-49n22r5tbm3tecp0cvpvh779p9ct9br7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

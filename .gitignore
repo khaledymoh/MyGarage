@@ -1,0 +1,28 @@
+*.iml
+.gradle
+/local.properties
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+keystore.properties
+*.jks
+*.keystore
+local.properties
+
+# Build output in every module, Kotlin compiler caches
+build/
+.kotlin/
+
+# IDE and Claude Code settings are per machine
+/.idea/
+/.claude/
+
+# Local-only design mockups, agent guides and the old web prototype
+*.html
+!/site/**/*.html
+/skills/
+/AGENTS.md
+/CLAUDE.md
+/mygarage/

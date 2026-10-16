@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">MyGarage</string>
+    <string name="tab_dash">Dash</string>
+    <string name="tab_log">Log</string>
+    <string name="tab_insights">Insights</string>
+    <string name="tab_add_record">Add record</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_name">MyGarage</string>
+    <string name="widget_description">Total spent and service reminders for your car</string>
+    <string name="widget_total_spent">Total spent</string>
+    <string name="widget_this_month">This month</string>
+    <string name="widget_reminders">Service reminders</string>
+    <string name="widget_all_on_track">All services on track</string>
+    <string name="widget_no_reminders">No services logged yet</string>
+    <string name="widget_no_car">Open MyGarage and pick a car</string>
+    <string name="widget_since">since %1$s</string>
+    <string name="widget_due_late">%1$dd late</string>
+    <string name="widget_due_days">%1$dd</string>
+    <string name="widget_due_months">%1$d mo</string>
+    <string name="widget_due_today">today</string>
+    <string name="widget_due_none">not logged</string>
+    <string name="widget_pill">%1$s · %2$s</string>
+    <string name="widget_type_maintenance">Maintenance</string>
+    <string name="widget_type_upgrade">Upgrades</string>
+    <string name="widget_type_detailing">Detailing</string>
+
+    <!-- App update (from Firebase Remote Config) -->
+    <string name="update_required_title">Update required</string>
+    <string name="update_required_text">This version of MyGarage is no longer supported. Install version %1$s to keep using the app.</string>
+    <string name="update_available_title">Update available</string>
+    <string name="update_available_text">MyGarage %1$s is ready, with the latest fixes and improvements.</string>
+    <string name="update_action">Download update</string>
+    <string name="update_later">Later</string>
+</resources>

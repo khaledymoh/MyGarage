@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Themed (monochrome) launcher icon. Generated from design/app-icon (H4 Night Garage). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:scaleX="0.72"
+        android:scaleY="0.72"
+        android:translateY="3.0">
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M32,44h44v3.8h-44z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:fillAlpha="0.75"
+            android:pathData="M32,48.6h44v3.8h-44z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:fillAlpha="0.5"
+            android:pathData="M32,53.2h44v3.8h-44z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M36.5,62.6 L49,65.4 L48.4,68.2 L37.6,66.8Z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M71.5,62.6 L59,65.4 L59.6,68.2 L70.4,66.8Z" />
+        <path
+            android:pathData="M32,44V76M76,44V76"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="2"
+            android:strokeLineCap="butt"
+            android:strokeLineJoin="round" />
+        <path
+            android:pathData="M26,76H82"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="1.4"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:strokeAlpha="0.6" />
+        <path
+            android:pathData="M23,46L54,25.5L85,46"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="6.4"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+    </group>
+</vector>

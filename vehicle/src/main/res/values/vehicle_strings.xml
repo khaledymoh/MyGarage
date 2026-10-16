@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Vehicle Form -->
+    <string name="vehicle_form_edit_title">Edit vehicle</string>
+    <string name="vehicle_form_add_title">Add vehicle</string>
+    <string name="vehicle_form_save_changes">Save changes</string>
+    <string name="vehicle_form_photo_label">Photo (optional)</string>
+    <string name="vehicle_form_photo_hint">JPG, PNG, or WebP. Stored only on this device.</string>
+    <string name="vehicle_form_manufacturer_label">Manufacturer *</string>
+    <string name="vehicle_form_manufacturer_placeholder">e.g. Ford</string>
+    <string name="vehicle_form_model_label">Model *</string>
+    <string name="vehicle_form_model_placeholder">e.g. Fusion</string>
+    <string name="vehicle_form_year_label">Model year *</string>
+    <string name="vehicle_form_year_placeholder">Year</string>
+    <string name="vehicle_form_trim_label">Trim</string>
+    <string name="vehicle_form_trim_placeholder">e.g. Titanium</string>
+    <string name="vehicle_form_mileage_label">Current mileage (km) *</string>
+    <string name="vehicle_form_mileage_placeholder">0</string>
+    <string name="vehicle_form_mileage_below_service">Must be at least %1$s km, the mileage of the latest service</string>
+    <string name="vehicle_form_plate_label">License plate</string>
+    <string name="vehicle_form_plate_placeholder">e.g. 12-34567</string>
+    <string name="vehicle_form_vin_label">VIN</string>
+    <string name="vehicle_form_vin_hint">17 characters, optional</string>
+    <string name="vehicle_form_color_label">Color</string>
+    <string name="vehicle_form_color_placeholder">e.g. Deep blue</string>
+
+
+    <!-- Cockpit: car header, Dash -->
+    <string name="car_switch">Switch car</string>
+    <string name="dash_total_title">Total spent · all time</string>
+    <plurals name="dash_total_caption">
+        <item quantity="one">%1$d record since %2$s</item>
+        <item quantity="other">%1$d records since %2$s</item>
+    </plurals>
+    <string name="dash_by_month">By month</string>
+    <string name="dash_this_month">This month</string>
+    <string name="dash_vs_last_less">%1$d%% less than %2$s</string>
+    <string name="dash_vs_last_more">%1$d%% more than %2$s</string>
+    <string name="dash_vs_last_none">Nothing logged in %1$s</string>
+    <string name="dash_last_wash">Last wash</string>
+    <string name="dash_last_wash_value">%dd</string>
+    <string name="dash_last_wash_avg">avg every %d days</string>
+    <string name="dash_last_wash_none">No washes yet</string>
+    <string name="dash_reminders">Service reminders</string>
+    <string name="dash_reminders_by_time">by time</string>
+    <string name="dash_latest">Latest</string>
+    <string name="dash_empty_title">No records yet</string>
+    <string name="dash_empty_text">Log a service, upgrade or wash and the charts and reminders fill in on their own.</string>
+    <string name="dash_empty_action">Add the first record</string>
+    <string name="dash_records_none">Nothing logged yet</string>
+
+    <!-- Cockpit: Log -->
+    <string name="log_search_placeholder">Search this car\'s records…</string>
+    <string name="log_filters">Filters</string>
+    <string name="log_clear_search">Clear search</string>
+    <string name="log_all">All %d</string>
+    <string name="log_month_total">%1$s · %2$s</string>
+    <plurals name="log_results">
+        <item quantity="one">%1$d result · %2$s</item>
+        <item quantity="other">%1$d results · %2$s</item>
+    </plurals>
+    <string name="log_filters_title">Filters · %s</string>
+    <string name="log_reset">Reset</string>
+    <string name="log_type">Type</string>
+    <string name="log_service">Service</string>
+    <string name="log_service_hint">Any service</string>
+    <string name="log_when">When</string>
+    <string name="log_when_any">Any time</string>
+    <string name="log_when_30">30 days</string>
+    <string name="log_when_90">3 months</string>
+    <string name="log_when_year">This year</string>
+    <string name="log_mileage">Mileage</string>
+    <string name="log_min_km">Min km</string>
+    <string name="log_max_km">Max km</string>
+    <plurals name="log_show_results">
+        <item quantity="one">Show %d result</item>
+        <item quantity="other">Show %d results</item>
+    </plurals>
+    <string name="log_empty_title">No records found</string>
+    <string name="log_empty_search">Nothing matches \"%s\" in this car\'s records. Try a different word or clear the filters.</string>
+    <string name="log_empty_filters">No records match these filters.</string>
+    <string name="log_clear_filters">Clear filters</string>
+    <string name="log_empty_car_title">No records yet</string>
+    <string name="log_empty_car_text">Tap + to log a service, upgrade or wash.</string>
+
+    <!-- Cockpit: vehicle form + profile -->
+    <string name="vehicle_form_use_mileage">Use %s km</string>
+    <string name="profile_back">Back</string>
+    <string name="profile_edit">Edit vehicle</string>
+    <string name="profile_delete">Delete vehicle</string>
+    <string name="profile_last_odometer">Last odometer</string>
+    <string name="profile_plate">Plate</string>
+    <string name="profile_color">Color</string>
+    <string name="profile_year">Year</string>
+    <string name="profile_vin">VIN</string>
+    <string name="profile_at_a_glance">At a glance</string>
+    <string name="profile_none">—</string>
+    <plurals name="profile_visits">
+        <item quantity="one">%d visit</item>
+        <item quantity="other">%d visits</item>
+    </plurals>
+    <plurals name="profile_upgrades">
+        <item quantity="one">%1$d record · %2$d items</item>
+        <item quantity="other">%1$d records · %2$d items</item>
+    </plurals>
+    <plurals name="profile_washes">
+        <item quantity="one">%d wash</item>
+        <item quantity="other">%d washes</item>
+    </plurals>
+    <string name="profile_delete_title">Delete %s?</string>
+    <plurals name="profile_delete_text">
+        <item quantity="one">This removes the vehicle and its %1$d record (%2$s of history). This can\'t be undone.</item>
+        <item quantity="other">This removes the vehicle and all %1$d of its records (%2$s of history). This can\'t be undone.</item>
+    </plurals>
+
+    <!-- Cockpit: Insights -->
+    <string name="insights_this_year">This year</string>
+    <string name="insights_all_time">All time</string>
+    <string name="insights_breakdown">Breakdown</string>
+    <string name="insights_per_month">Per month</string>
+    <string name="insights_per_month_caption">average</string>
+    <string name="insights_washes">Washes</string>
+    <string name="insights_washes_caption">%s total</string>
+    <string name="insights_build_list">Build list</string>
+    <plurals name="insights_build_parts">
+        <item quantity="one">%d part</item>
+        <item quantity="other">%d parts</item>
+    </plurals>
+    <string name="insights_top_places">Where the money went</string>
+    <string name="insights_empty_title">Nothing to analyse yet</string>
+    <string name="insights_empty_text">Insights appear once this car has records in the selected period.</string>
+</resources>

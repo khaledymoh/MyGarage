@@ -1,0 +1,160 @@
+# Every merge to main: run the unit tests, build the signed release APK and publish it as a
+# GitHub release. Versions count up from the workflow run: v1.1.<run>, versionCode <run + 100>
+# (the offset keeps new builds above the 1.0.x builds from before the repository was recreated,
+# so they install over them).
+#
+# Needs these repository secrets (Settings → Secrets and variables → Actions):
+#   KEYSTORE_BASE64    the release keystore, base64-encoded
+#   KEYSTORE_PASSWORD  keystore password
+#   KEY_ALIAS          key alias (MyGarage)
+#   KEY_PASSWORD       key password
+# Optional, to tell installed apps about the new version (Firebase Remote Config):
+#   FIREBASE_SERVICE_ACCOUNT  JSON key of a service account with the "Firebase Remote Config Admin" role
+# Force update: put [force-update] in the PR title (it ends up in the merge commit message), or tick
+# "Force update" when running the workflow by hand. Installs older than this release are then blocked.
+name: Release
+
+on:
+  push:
+    branches: [main]
+    # Docs and design-only changes don't need a new app release.
+    paths-ignore:
+      - '**.md'
+      - '**.html'
+      - 'docs/**'
+      - 'design/**'
+      - 'skills/**'
+      - 'site/**'
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: Force update (block older installs until they update)
+        type: boolean
+        default: false
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      VERSION_NAME: 1.1.${{ github.run_number }}
+      FORCE_UPDATE: ${{ inputs.force_update || contains(github.event.head_commit.message, '[force-update]') }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Set up release signing
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ] || [ -z "$KEYSTORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ] || [ -z "$KEY_PASSWORD" ]; then
+            echo "::error::Release signing secrets are missing. Add KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS and KEY_PASSWORD."
+            exit 1
+          fi
+          echo "$KEYSTORE_BASE64" | base64 --decode > release.keystore
+          {
+            echo "keystoreFile=release.keystore"
+            echo "keystorePassword=$KEYSTORE_PASSWORD"
+            echo "keyAlias=$KEY_ALIAS"
+            echo "keyPassword=$KEY_PASSWORD"
+          } > keystore.properties
+
+      - name: Unit tests
+        run: ./gradlew :core:domain:test
+
+      - name: Build signed release APK
+        run: |
+          VERSION_CODE=$(( ${{ github.run_number }} + 100 ))
+          echo "VERSION_CODE=$VERSION_CODE" >> "$GITHUB_ENV"
+          ./gradlew :app:assembleRelease \
+            -PversionCode=$VERSION_CODE \
+            -PversionName="$VERSION_NAME"
+          cp app/build/outputs/apk/release/app-release.apk "MyGarage-v$VERSION_NAME.apk"
+          # Fixed name too, so .../releases/latest/download/MyGarage.apk always gets the newest build.
+          cp app/build/outputs/apk/release/app-release.apk MyGarage.apk
+
+      - name: Check the APK is signed with the release key
+        run: |
+          APKSIGNER="$ANDROID_HOME/build-tools/$(ls "$ANDROID_HOME/build-tools" | sort -V | tail -1)/apksigner"
+          "$APKSIGNER" verify --print-certs "MyGarage-v$VERSION_NAME.apk" | tee signer.txt
+          grep -q "CN=MyGarage" signer.txt
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SHA256=$(sha256sum "MyGarage-v$VERSION_NAME.apk" | cut -d' ' -f1)
+          gh release create "v$VERSION_NAME" "MyGarage-v$VERSION_NAME.apk" MyGarage.apk \
+            --target "$GITHUB_SHA" \
+            --title "MyGarage $VERSION_NAME" \
+            --generate-notes \
+            --notes "Install: download **MyGarage-v$VERSION_NAME.apk** below and open it on your phone (Android 7.0+). It updates the installed app in place.
+
+          SHA-256: \`$SHA256\`"
+
+      - name: Check for the Firebase service account
+        id: firebase
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -n "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::FIREBASE_SERVICE_ACCOUNT is not set, so installed apps won't be told about v$VERSION_NAME."
+          fi
+
+      - uses: google-github-actions/auth@v2
+        if: steps.firebase.outputs.enabled == 'true'
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+        if: steps.firebase.outputs.enabled == 'true'
+
+      - name: Publish the new version to Remote Config
+        if: steps.firebase.outputs.enabled == 'true'
+        env:
+          # The download page (GitHub Pages), which always offers the latest APK.
+          UPDATE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+        run: |
+          PROJECT_ID=$(jq -r '.project_info.project_id' app/google-services.json)
+          URL="https://firebaseremoteconfig.googleapis.com/v1/projects/$PROJECT_ID/remoteConfig"
+          TOKEN=$(gcloud auth print-access-token)
+          curl -sS --fail-with-body -D headers.txt -H "Authorization: Bearer $TOKEN" "$URL" -o template.json
+          ETAG=$(grep -i '^etag:' headers.txt | cut -d' ' -f2 | tr -d '\r')
+          jq --arg code "$VERSION_CODE" --arg name "$VERSION_NAME" --arg url "$UPDATE_URL" --arg force "$FORCE_UPDATE" '
+            del(.version)
+            | .parameters = (.parameters // {})
+            | .parameters.latest_version_code = {defaultValue: {value: $code}, valueType: "NUMBER", description: "Newest release (versionCode). Set by the release workflow."}
+            | .parameters.latest_version_name = {defaultValue: {value: $name}, valueType: "STRING", description: "Newest release name. Set by the release workflow."}
+            | .parameters.update_url = {defaultValue: {value: $url}, valueType: "STRING", description: "Download page the update sheet opens. Set by the release workflow."}
+            | if $force == "true" or (.parameters.min_version_code == null)
+              then .parameters.min_version_code = {defaultValue: {value: (if $force == "true" then $code else "0" end)}, valueType: "NUMBER", description: "Installs below this versionCode must update. Raised by [force-update] releases."}
+              else . end
+          ' template.json > new-template.json
+          curl -sS --fail-with-body -X PUT "$URL" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json; UTF-8" \
+            -H "If-Match: $ETAG" \
+            --data @new-template.json -o /dev/null
+          echo "Remote Config: latest v$VERSION_NAME ($VERSION_CODE), force update: $FORCE_UPDATE"
+
+      - name: Remove signing files
+        if: always()
+        run: rm -f release.keystore keystore.properties signer.txt headers.txt template.json new-template.json

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="resources_module_name">Resources</string>
+
+    <string name="error_no_connection">No internet connection. Check your network and try again.</string>
+    <string name="error_timeout">The request timed out. Please try again.</string>
+    <string name="error_unauthorized">Your session has expired. Please sign in again.</string>
+    <string name="error_permission_denied">You don\'t have permission to do that.</string>
+    <string name="error_not_found">We couldn\'t find what you were looking for.</string>
+    <string name="error_too_many_requests">Too many attempts. Please wait a moment and try again.</string>
+    <string name="error_server">Something went wrong on our end. Please try again later.</string>
+    <string name="error_unknown">Something went wrong. Please try again.</string>
+
+    <string name="vehicle_delete_action">Delete vehicle</string>
+    <string name="vehicle_delete_dialog_title">Delete this vehicle?</string>
+    <string name="vehicle_delete_dialog_message">%1$s will be permanently removed from your garage. This can\'t be undone.</string>
+    <string name="vehicle_delete_dialog_confirm">Delete</string>
+    <string name="vehicle_delete_dialog_cancel">Cancel</string>
+</resources>

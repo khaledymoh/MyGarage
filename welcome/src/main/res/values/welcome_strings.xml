@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_eyebrow">Your vehicle records, organized</string>
+    <string name="welcome_title">Take better care of every car you own.</string>
+    <string name="welcome_subtitle">Keep service visits, mileage, costs, and receipts together in one private maintenance log.</string>
+    <string name="welcome_add_first_car">＋  Add your first car</string>
+    <string name="welcome_footer">Backed up to your Google account</string>
+</resources>

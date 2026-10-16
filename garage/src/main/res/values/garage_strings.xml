@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="garage_title">My garage</string>
+    <string name="garage_subtitle">Choose a car to open</string>
+    <string name="garage_add_button">Add vehicle</string>
+    <string name="garage_add_first">Add your first car</string>
+
+    <string name="welcome_eyebrow">Your vehicle records, organized</string>
+    <string name="welcome_title">Take better care of every car you own.</string>
+    <string name="welcome_subtitle">Keep services, upgrades, washes, costs and receipts together in one private log.</string>
+    <string name="welcome_tracks">What you\'ll track</string>
+    <string name="welcome_track_maintenance">Services and time-based reminders</string>
+    <string name="welcome_track_upgrades">Your build list and what it cost</string>
+    <string name="welcome_track_detailing">Washes and care</string>
+</resources>

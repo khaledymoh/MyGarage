@@ -99,6 +99,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          if gh release view "v$VERSION_NAME" > /dev/null 2>&1; then
+            echo "Release v$VERSION_NAME already exists (re-run), skipping."
+            exit 0
+          fi
           SHA256=$(sha256sum "MyGarage-v$VERSION_NAME.apk" | cut -d' ' -f1)
           gh release create "v$VERSION_NAME" "MyGarage-v$VERSION_NAME.apk" MyGarage.apk \
             --target "$GITHUB_SHA" \
@@ -136,8 +140,16 @@ jobs:
           PROJECT_ID=$(jq -r '.project_info.project_id' app/google-services.json)
           URL="https://firebaseremoteconfig.googleapis.com/v1/projects/$PROJECT_ID/remoteConfig"
           TOKEN=$(gcloud auth print-access-token)
-          curl -sS --fail-with-body -D headers.txt -H "Authorization: Bearer $TOKEN" "$URL" -o template.json
-          ETAG=$(grep -i '^etag:' headers.txt | cut -d' ' -f2 | tr -d '\r')
+          CODE=$(curl -sS -D headers.txt -o template.json -w '%{http_code}' -H "Authorization: Bearer $TOKEN" "$URL")
+          if [ "$CODE" != "200" ]; then
+            echo "::error::Reading the Remote Config template failed (HTTP $CODE)"
+            cat template.json
+            exit 1
+          fi
+          ETAG=$(grep -i '^etag:' headers.txt | tail -1 | cut -d' ' -f2 | tr -d '\r')
+          # A project that has never published a template may return no ETag: overwrite unconditionally then.
+          [ -n "$ETAG" ] || ETAG='*'
+          echo "Template ETag: $ETAG"
           jq --arg code "$VERSION_CODE" --arg name "$VERSION_NAME" --arg url "$UPDATE_URL" --arg force "$FORCE_UPDATE" '
             del(.version)
             | .parameters = (.parameters // {})
@@ -148,13 +160,20 @@ jobs:
               then .parameters.min_version_code = {defaultValue: {value: (if $force == "true" then $code else "0" end)}, valueType: "NUMBER", description: "Installs below this versionCode must update. Raised by [force-update] releases."}
               else . end
           ' template.json > new-template.json
-          curl -sS --fail-with-body -X PUT "$URL" \
+          CODE=$(curl -sS -X PUT "$URL" -o put-response.json -w '%{http_code}' \
             -H "Authorization: Bearer $TOKEN" \
             -H "Content-Type: application/json; UTF-8" \
             -H "If-Match: $ETAG" \
-            --data @new-template.json -o /dev/null
+            --data @new-template.json)
+          if [ "$CODE" != "200" ]; then
+            echo "::error::Publishing the Remote Config template failed (HTTP $CODE)"
+            cat put-response.json
+            echo "--- template sent:"
+            cat new-template.json
+            exit 1
+          fi
           echo "Remote Config: latest v$VERSION_NAME ($VERSION_CODE), force update: $FORCE_UPDATE"
 
       - name: Remove signing files
         if: always()
-        run: rm -f release.keystore keystore.properties signer.txt headers.txt template.json new-template.json
+        run: rm -f release.keystore keystore.properties signer.txt headers.txt template.json new-template.json put-response.json

@@ -1,5 +1,9 @@
 package com.almudier.mygarage.update
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,7 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -29,7 +33,7 @@ import com.almudier.mygarage.core.presentation.R as PresentationR
 @Composable
 fun UpdateSheet(update: AppUpdate, onLater: () -> Unit) {
     val colors = GarageDesignTheme.colors
-    val uriHandler = LocalUriHandler.current
+    val context = LocalContext.current
     GarageBottomSheet(onDismissRequest = onLater, dismissible = !update.required) {
         Column(
             Modifier.fillMaxWidth().padding(bottom = 8.dp),
@@ -58,7 +62,7 @@ fun UpdateSheet(update: AppUpdate, onLater: () -> Unit) {
         Column(Modifier.padding(top = 14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             GarageButton(
                 stringResource(R.string.update_action),
-                onClick = { uriHandler.openUri(update.url) },
+                onClick = { openInChrome(context, update.url) },
                 modifier = Modifier.fillMaxWidth(),
             )
             if (!update.required) {
@@ -72,3 +76,18 @@ fun UpdateSheet(update: AppUpdate, onLater: () -> Unit) {
         }
     }
 }
+
+/**
+ * Opens [url] in Chrome itself (not a tab inside another app or a browser chooser), so the APK
+ * download and its install prompt happen in a full browser. Falls back to any browser.
+ */
+private fun openInChrome(context: Context, url: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    try {
+        context.startActivity(Intent(intent).setPackage(CHROME_PACKAGE))
+    } catch (_: ActivityNotFoundException) {
+        runCatching { context.startActivity(intent) }
+    }
+}
+
+private const val CHROME_PACKAGE = "com.android.chrome"

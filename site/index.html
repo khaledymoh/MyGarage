@@ -64,6 +64,8 @@ section { padding: 56px 0; border-bottom: 1px solid var(--line); }
 .steps li::before { counter-increment: step; content: counter(step); display: grid; place-items: center; width: 28px; height: 28px; border-radius: 6px; background: var(--primary-muted); color: var(--primary); font-family: var(--mono); font-weight: 700; margin-bottom: 12px; }
 .steps b { color: var(--text); display: block; font-size: 15px; margin-bottom: 4px; }
 .note { margin-top: 16px; color: var(--mute); font-size: 13px; }
+.tip { margin-top: 12px; padding: 12px 14px; border: 1px solid var(--line); border-left: 3px solid var(--upgrade); border-radius: 6px; background: var(--surface); color: var(--dim); font-size: 13px; }
+.tip b { color: var(--text); }
 footer { padding: 32px 0 48px; color: var(--mute); font-size: 13px; }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 22px; justify-content: space-between; }
 
@@ -139,6 +141,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 22px; justify-content: s
       <li><b>Open and sign in</b>Open the downloaded file, install, then sign in with Google.</li>
     </ol>
     <p class="note">Updates install over the existing app and keep your data. The app tells you when a new version is out.</p>
+    <p class="tip"><b>Download stuck at 100% in Chrome?</b> Chrome sometimes holds new APK files for a safety check. Cancel it and try again, or download with another browser such as Samsung Internet or Firefox. You can also get the APK from the <a href="https://github.com/khaledymoh/MyGarage/releases/latest">GitHub release page</a>.</p>
   </div>
 </section>
 
